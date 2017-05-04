@@ -35,9 +35,9 @@ namespace Grades
 
         public void WriteGrades(TextWriter destination)
         {
-            for (int i = grades.Count; i > 0; i++)
+            for (int i = grades.Count; i > 0; i--)
             {
-                destination.WriteLine(grades[i]);
+                destination.WriteLine(grades[i - 1]);
             }
         }
 
@@ -54,12 +54,13 @@ namespace Grades
             }
             set
             {
+
                 if (String.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Name cannot be null or empty.");
+                    throw new ArgumentException("Name cannot be empty.");
                 }
 
-                if (_name != value)
+                if (_name != value && NameChanged != null)
                 {
                     NameChangedEventArgs args = new NameChangedEventArgs();
                     args.ExistingName = _name;
@@ -69,6 +70,7 @@ namespace Grades
                 }
 
                 _name = value;
+
             }
 
         }
@@ -76,6 +78,6 @@ namespace Grades
         public event NameChangedDelegate NameChanged;
 
         private string _name;
-        List<float> grades;
+        protected List<float> grades;
     }
 }
